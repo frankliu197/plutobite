@@ -13,9 +13,9 @@ dictionary = {'faceRectangle': {'height': 162, 'left': 130, 'top': 141, 'width':
    'sadness': 7.44669524e-06,
    'surprise': 0.9273863}}
 
-#helper function. Find the current picture number with the given file name
-#code copied from https://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 def picture_num(file_name):
+    #helper function. Find the current picture number with the given file name
+    #code copied from https://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
     with open(file_name) as f:
         for i, l in enumerate(f):
             pass
@@ -38,8 +38,12 @@ def new_bat_file(ad_num):
     data_file.write(s + "\n")
     data_file.close()
 
-def add_to_bat_file(ad_num, json):
-    #adds an image onto the bat file. params: ad_num and the json file returned from emotion api
+def to_dictionary(json):
+    #converts the json to a dictionary
+    return str(json)[1:-1]
+
+def add_to_bat_file(ad_num, dictionary):
+    #adds an image onto the bat file. params: ad_num and the dictionary file returned from emotion api
     data_file_name = "temp/ad" + str(ad_num) + ".txt"
     pic_num = picture_num(data_file_name)
     data_file.open(data_file_name, "a") 

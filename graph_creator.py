@@ -2,8 +2,6 @@
 import os
 from string import Template
 
-feelings = ['contempt', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise']
-
 def get_graph(input_file):
     #writes a script with the input file given. Assumes coherance to the general naming convention of the images.
     #if the input_file name is ad1.bat, the output_file is graphs/ad1.jpg, and creates the ad graph
