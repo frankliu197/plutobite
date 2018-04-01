@@ -1,34 +1,45 @@
+#Created by Frank Liu
 # Creates a Script to create a graph using gnuplot.
 import os
 from string import Template
 
-def get_graph(input_file):
-    #writes a script with the input file given. Assumes coherance to the general naming convention of the images.
-    #if the input_file name is ad1.bat, the output_file is graphs/ad1.jpg, and creates the ad graph
-    #if the output_file name is overall.bat, the output_file is graphs/overall.jpg, and creates the overall graph
-    #assumes input_file is in temp folder
-    #outputs to images/
+feelings = ['anger', 'contempt', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise']
 
-    file_name = input_file[0:input_file.index(".")]
-    ad_number = file_name[len(file_name) - 1:len(file_name)]
+def get_graph(ad_num=0):
+    #writes a script with the input ad given.
+    #if an ad_num is given, the function will search for the bat file and output the graph as "graphs/ad#{ad_num}.jpg
+    #if no ad_num is given, or if ad_num is 0 the overall graph will be greated in overall/overall.jpg
+    
+    def add_colors(str1, str2, str3=''):
+        #adds the colors to the corrosponding emotions
+        pass
+
+    def add_emotions():
+        #adds emotions to plot_style for dic_overall
+        s = ""
+        for i in range(len(feelings)):
+            s+= "using " + str(i + 2) + " t \"" + feelings[i] + "\""
+            if i < len(feelings):
+                s+= ",\n '' "
+        return s
 
     #the specific properties of the dat_file script, look below
-    dic_ad  = {"graphs/output_file" : file_name + ".jpg", "title" : "Emotions from Advertisement " + str(ad_number), 
-        "x_label" : "Image Number", "y_label" : "% Total", "x_max" : 10 , 
-        "y_max" : 100, "temp/input_file": file_name + ".dat", 
-        "plot_style" : """using 2 t "Contempt" lt rgb "green", '' using 3 t "Disgust" lt rgb "gray", '' using 4 t "Fear" lt rgb "yellow", '' using 5 t "Happiness", '' using 6 t "Neutral", '' using 7 t "Sadness", '' using 8 t "Surprised"
-        """
+    dic_ad  = {"output_file" : "graphs/ad" + str(ad_num) + ".jpg", "title" : "Emotions from Advertisement " + str(ad_num), 
+        "x_label" : "Emotions", "y_label" : "% of Emotion", "x_max" : 8.5 , 
+        "y_max" : "auto", "set_key": '', "input_file": "data/ad" + str(ad_num) + ".txt",  "plot_type": "",
+        "plot_style" : ''
     }
 
-    dic_overall = {"graphs/output_file" : file_name + ".jpg", "title" : "Emotions from all the Advertisements", 
-        "x_label" : "Advertisement Number", "y_label" : "Number of Images", "x_max" : "auto" , 
-        "y_max" : "auto", "temp/input_file": file_name + ".dat", 
-        "plot_style" : """using 2 t "Happy" lt rgb "green", '' using 3 t "Sad" lt rgb "gray", '' using 4 t "Surprised" lt rgb "yellow" """
+    dic_overall = {"output_file" : "overall/overall.jpg", "title" : "Emotions from all the Advertisements", 
+        "x_label" : "Advertisement Number", "y_label" : "% Total Emotions", "x_max" : "auto" , 
+        "y_max" : "100", "input_file": "overall/overall.txt", "plot_type": "set style histogram rowstacked",  
+        "plot_style" : add_emotions(), "set_key": "set key right"
+        #"""using 2 t "Happy" lt rgb "green", '' using 3 t "Sad" lt rgb "gray", '' using 4 t "Surprised" lt rgb "yellow" """
     }
 
     #there are two dics to use, specify the one to use here
     dic = dic_ad
-    if file_name.lower() == "overall":
+    if ad_num == 0:
            dic = dic_overall
 
     #the generalized dat file giving a bar graph look. Change the qualities of the script with the dictionary files above
@@ -36,14 +47,14 @@ def get_graph(input_file):
     set terminal jpeg giant font "Helvetica" 16
         
     set output '$output_file'
-    set key right
+    $set_key
     set grid y
     
     set style data histogram
-    set style histogram rowstacked
+    $plot_type
     set style fill solid
     set border 3
-    set boxwidth 0.6
+    set boxwidth 0.8
     
     set title '$title'
     set ylabel '$y_label'
@@ -58,14 +69,14 @@ def get_graph(input_file):
     """).substitute(dic)
     
     #Writes the dat_file code into a script
-    gnuplot_name = "temp/" + file_name + ".gnuplot"
+    gnuplot_name = "dat/" + str(ad_num) + ".gnuplot"
     script = open(gnuplot_name, 'w')
     script.write(dat_file)
     script.close()
 
     #execute the script
     os.system("gnuplot -e \"filename=\'" + dic["input_file"] + "\'\" " + gnuplot_name)
-    os.system("rm " + gnuplot_name)
+    #os.system("rm " + gnuplot_name)
 
 
 

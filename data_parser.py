@@ -1,30 +1,11 @@
 #created by Frank Liu
 #this class contains methods to edit all the bat files as required
+from collections import OrderedDict
 
 spacing = "\t\t"
-feelings = ['contempt', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise']
-dictionary = {'faceRectangle': {'height': 162, 'left': 130, 'top': 141, 'width': 162},
-  'scores': {'anger': 9.29041e-06,
-   'contempt': 0.000118981574,
-   'disgust': 3.15619363e-05,
-   'fear': 0.000589638,
-   'happiness': 0.06630674,
-   'neutral': 0.00555004273,
-   'sadness': 7.44669524e-06,
-   'surprise': 0.9273863}}
-
-def picture_num(file_name):
-    #helper function. Find the current picture number with the given file name
-    #code copied from https://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-    with open(file_name) as f:
-        for i, l in enumerate(f):
-            pass
-    return i - 1
-
-
-def new_bat_file(ad_num):
-    #sets up a new information file to use
-    data_file = open("temp/ad" + str(ad_num) + ".txt", "w")
+def summary_data_file(ad_num):
+    #adds an image onto the bat file inside the dat file folder
+    data_file = open("overall/ad" + str(ad_num) + ".txt", "w")
 
     s = "#" + spacing
     for i in feelings:
@@ -38,17 +19,23 @@ def new_bat_file(ad_num):
     data_file.write(s + "\n")
     data_file.close()
 
-def to_dictionary(json):
-    #converts the json to a dictionary
-    return str(json)[1:-1]
-
-def add_to_bat_file(ad_num, dictionary):
-    #adds an image onto the bat file. params: ad_num and the dictionary file returned from emotion api
-    data_file_name = "temp/ad" + str(ad_num) + ".txt"
-    pic_num = picture_num(data_file_name)
-    data_file.open(data_file_name, "a") 
+    data_file_name = "data/ad" + str(ad_num) + ".txt"
     s = str(pic_num) + spacing
     for i in dictionary['scores'].values():
         s += str(round(i * 100, 2)) + spacing
     data_file.write(s + "\n")
+
+
+def to_dictionary(json):
+    #converts the json to an ordered dictionary
+    return OrderedDict(sorted(json[0]['faceAttributes']['emotion'].items()))
+
+def add_data_file(ad_num, dictionary):
+    #adds an image onto the bat file. params: ad_num and the dictionary file returned from emotion api
+    data_file = open("data/ad" + str(ad_num) + ".txt", "w")
+    data_file.write("#" + spacing + "Value")
+    i = 0
+    for k, v in dictionary.items():
+        i+= 1
+        data_file.write(str(i) + spacing + k + spacing + str(round(v * 100, 2)) + "\n")
     data_file.close()

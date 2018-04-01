@@ -8,7 +8,3 @@ list_ = [{'faceRectangle': {'height': 162, 'left': 130, 'top': 141, 'width': 162
    'sadness': 7.44669524e-06,
    'surprise': 0.9273863}}]
 
-
-
-
-
