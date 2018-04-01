@@ -1,0 +1,7 @@
+Endpoint: https://westcentralus.api.cognitive.microsoft.com/face/v1.0
+
+Key 1: ceeccfc055fa4bcda459bc2a51fa16cd
+
+Key 2: 5715ff3d42214d0992a736061e265981
+
+
