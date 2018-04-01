@@ -1,30 +1,39 @@
 #created by Frank Liu
 #this class contains methods to edit all the bat files as required
 from collections import OrderedDict
+from graph_creator import feelings
+import os, os.path
 
 spacing = "\t\t"
-def summary_data_file(ad_num):
+def summary_data_file():
     #adds an image onto the bat file inside the dat file folder
-    data_file = open("overall/ad" + str(ad_num) + ".txt", "w")
-
+    data_file = open("overall/overall.txt", "w")
     s = "#" + spacing
     for i in feelings:
         s += str(i) + spacing
     data_file.write(s + "\n")
-
+    
     #need an empty line so the starting index is 0 not 1 in the graph
     s = "0" + spacing
     for i in feelings:
         s += str(0) + spacing
     data_file.write(s + "\n")
-    data_file.close()
+   
+    files = os.listdir("data") 
 
-    data_file_name = "data/ad" + str(ad_num) + ".txt"
-    s = str(pic_num) + spacing
-    for i in dictionary['scores'].values():
-        s += str(round(i * 100, 2)) + spacing
-    data_file.write(s + "\n")
-
+    a = 0
+    for i in files:
+        a+= 1
+        sample_file = open("data/" + i, "r")
+        lines = sample_file.read().split("\n")
+        s = str(a) + spacing
+        for line_n in range(1, len(lines)):
+            line = lines[line_n]
+            number = line[line.rfind("\t") + 1:len(line)]
+            s += spacing + str(number)
+        sample_file.close()
+        data_file.write(s + "\n")
+        
 
 def to_dictionary(json):
     #converts the json to an ordered dictionary

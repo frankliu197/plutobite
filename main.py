@@ -1,13 +1,29 @@
 #created by Frank Liu
 #this class will tie all the methods together
 from emotions import get_emotions
-from data_parser import to_dictionary, add_data_file
+from data_parser import to_dictionary, add_data_file, summary_data_file
 from graph_creator import get_graph
+import capture
 #return_value = get_emotions('face.jpg')
+ad_num = 0
 
-return_value = [{'faceRectangle': {'top': 128, 'height': 207, 'width': 207, 'left': 57}, 'faceId': 'a45ca2ab-f64b-4018-8351-b835b72e0ca1', 'faceAttributes': {'emotion': {'disgust': 0.0, 'sadness': 0.0, 'happiness': 0.0, 'contempt': 0.0, 'anger': 0.0, 'fear': 0.0, 'neutral': 1.0, 'surprise': 0.0}}}]
-add_data_file(1, to_dictionary(return_value))
-get_graph(1)
+def get_emotions_graph(image):
+    #returns an the location of the graph made for the given ads
+    add_data_file(ad_num, to_dictionary(get_emotions(image)))
+    return get_graph(ad_num)
 
+def get_overall_graph():
+    summary_data_file()
+    return get_graph()
 
+def next_ad_number():
+    #helper method
+    global ad_num
+    ad_num += 1
+    return ad_num
 
+def capture_image():
+    #returns the image location that is captured
+    return capture.capture(next_ad_number())
+
+capture_image()

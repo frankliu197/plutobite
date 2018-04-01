@@ -4,6 +4,7 @@ import requests
 def get_emotions(image):
     #gives the emotions of the person on the images
     #throws an exception if the image is faulty or if the internet sucks
+    #param image location
     image_url = '' #maybe used for a future use
     params = {
         'returnFaceAttributes': 'emotion',
