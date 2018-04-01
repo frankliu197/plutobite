@@ -1,8 +1,9 @@
-#		Value1		anger		0.0
-2		contempt		0.0
-3		disgust		0.0
-4		fear		0.0
-5		happiness		0.0
-6		neutral		100.0
-7		sadness		0.0
-8		surprise		0.0
+#		Value 
+anger		0.0
+contempt		0.0
+disgust		0.0
+fear		0.0
+happiness		0.0
+neutral		100.0
+sadness		0.0
+surprise		0.0

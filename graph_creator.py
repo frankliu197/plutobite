@@ -3,7 +3,7 @@
 import os
 from string import Template
 
-feelings = ['anger', 'contempt', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise']
+feelings = ['Anger', 'Contempt', 'Disgust', 'Fear', 'Happiness', 'Neutral', 'Sadness', 'Surprise']
 
 def get_graph(ad_num=0):
     #writes a script with the input ad given.
@@ -25,14 +25,14 @@ def get_graph(ad_num=0):
 
     #the specific properties of the dat_file script, look below
     dic_ad  = {"output_file" : "graphs/ad" + str(ad_num) + ".jpg", "title" : "Emotions from Advertisement " + str(ad_num), 
-        "x_label" : "Emotions", "y_label" : "% of Emotion", "x_max" : 8.5 , 
-        "y_max" : "auto", "set_key": '', "input_file": "data/ad" + str(ad_num) + ".txt",  "plot_type": "",
-        "plot_style" : ''
+        "x_label" : "Emotions", "y_label" : "% of Emotion", "x_scale" :"set xrange [-0.5:8.5]", 
+        "y_scale": "set autoscale y", "set_key": "", "input_file": "data/ad" + str(ad_num) + ".txt",  "plot_type": "", "x_fonts":"set xtics nomirror rotate by -45 scale 0 font \",13\"",
+        "plot_style" : "using 2:xtic(1)"
     }
 
     dic_overall = {"output_file" : "overall/overall.jpg", "title" : "Emotions from all the Advertisements", 
-        "x_label" : "Advertisement Number", "y_label" : "% Total Emotions", "x_max" : "auto" , 
-        "y_max" : "100", "input_file": "overall/overall.txt", "plot_type": "set style histogram rowstacked",  
+        "x_label" : "Advertisement Number", "y_label" : "% Total Emotions", "x_scale" : "set autoscale x" , 
+        "y_scale" : "set yrange[0:100]", "input_file": "overall/overall.txt", "plot_type": "set style histogram rowstacked",  
         "plot_style" : add_emotions(), "set_key": "set key right"
         #"""using 2 t "Happy" lt rgb "green", '' using 3 t "Sad" lt rgb "gray", '' using 4 t "Surprised" lt rgb "yellow" """
     }
@@ -49,21 +49,22 @@ def get_graph(ad_num=0):
     set output '$output_file'
     $set_key
     set grid y
-    
+
     set style data histogram
     $plot_type
     set style fill solid
     set border 3
-    set boxwidth 0.8
+    set boxwidth 0.8 relative
     
     set title '$title'
     set ylabel '$y_label'
     set xlabel '$x_label'
     set xtics 1
-    
-    set xrange [0.5:$x_max]
-    set yrange [0:$y_max]
-    
+    $x_fonts
+
+    $x_scale
+    $y_scale 
+
     plot "$input_file"\
             $plot_style
     """).substitute(dic)

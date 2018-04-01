@@ -33,9 +33,7 @@ def to_dictionary(json):
 def add_data_file(ad_num, dictionary):
     #adds an image onto the bat file. params: ad_num and the dictionary file returned from emotion api
     data_file = open("data/ad" + str(ad_num) + ".txt", "w")
-    data_file.write("#" + spacing + "Value")
-    i = 0
+    data_file.write("#" + spacing + "Value \n")
     for k, v in dictionary.items():
-        i+= 1
-        data_file.write(str(i) + spacing + k + spacing + str(round(v * 100, 2)) + "\n")
+        data_file.write(k + spacing + str(round(v * 100, 2)) + "\n")
     data_file.close()
